@@ -1,0 +1,65 @@
+service: wp-core-api-tracking
+
+plugins:
+  - serverless-bundle
+  - serverless-pseudo-parameters
+  - serverless-offline
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  memorySize: 256
+  stage: ${opt:stage, 'dev'}
+  region: ${opt:region, 'us-west-2'}
+  lambdaHashingVersion: 20201221
+  versionFunctions: false
+  # role: DefaultLambdaIAMRole      
+  tracing:
+    lambda: true
+    apiGateway: true
+  environment:
+    ORDERSNS: ${self:custom.shipmentSNS}
+  iamRoleStatements:
+    - ${file(resources/orderSNS.yml):orderSNSTopic}
+    - ${file(resources/iam.yml):EventBucketIAM}
+    - ${file(resources/kmsIAM.yml):kmsAccess}
+    - ${file(resources/sqsIAM.yml):sqsAccessPolicy}
+
+functions:
+    ping:
+      handler: ./app/handler.ping
+      events:
+        - http:
+            method: GET
+            path: tracking/ping
+
+    track:
+      handler: ./app/handler.track
+      events:
+        # - http:
+        #     method: GET
+        #     path: tracking/eventtest
+        #     cors: true
+        - s3:
+            existing: true
+            bucket: ${self:custom.emitterbucketname}
+            event: s3:ObjectCreated:*
+
+    test:
+      handler: ./app/handler.test
+      events:
+        - http:
+            method: GET
+            path: tracking/tst
+
+resources:
+  - ${file(./resources/bucket.yml)}
+  # - ${file(./resources/subscriptionPermissions.yml)}
+  # - ${file(./resources/bucketPermissions.yml)}
+
+custom:
+  AppName: CORE-API-TRACKING
+  Stage: dev
+  emitterbucketname: b72-emitter-bucket-00
+  shipmentSNS: arn:aws:sns:us-west-2:412265488535:wp-dev-wp-core-api-tracking-temp-idoc-topic
+  # shipmentSNS: arn:aws:sns:us-west-2:412265488535:ShipmentSNS

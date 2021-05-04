@@ -1,0 +1,17 @@
+kmsAccess:
+  Effect: Allow
+  Action:
+    - kms:Encrypt
+    - kms:Decrypt
+    - kms:ReEncrypt*
+    - kms:GenerateDataKey*
+    - kms:DescribeKey
+  Resource: # KMS secrets manager Role ARN
+    - "arn:aws:kms:us-west-2:908843285931:key/9afd963d-f88a-4e9d-93b7-2e6cda7285f9"
+    - "arn:aws:kms:us-west-2:908843285931:key/b670d57d-be6a-455d-b2f6-3c467622f51b"
+    - "arn:aws:kms:us-west-2:908843285931:key/a6c9e0ac-e1c1-4b21-a8bd-ff9e68b3167e"
+    - "arn:aws:kms:us-west-2:908843285931:key/adbbb6fc-71f1-4a8c-8ac3-7c07206d4834"
+    - "arn:aws:kms:us-west-2:908843285931:key/51005977-7d45-48fc-8db4-b704a4c22e5e"
+    - "arn:aws:kms:us-west-2:678330046921:key/79585210-b09a-46cd-9718-41746649eac2"
+    - "arn:aws:kms:us-west-2:908843285931:key/fa1b584e-c2ca-4aab-b5ab-3882a000ab84"
+    - "arn:aws:kms:us-west-2:908843285931:key/840245ed-e327-4d43-9651-176af1f5e6ee"

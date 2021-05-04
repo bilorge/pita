@@ -1,0 +1,26 @@
+Resources:
+  myAssumedRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: myAssumedRole
+      Tags:
+        - Key: owner
+          Value: Presidio
+        - Key: createdby
+          Value: SLS FrameWork
+        - Key: appname
+          Value: ${self:custom.AppName}
+        - Key: approle
+          Value: default lambda role
+        - Key: environment
+          Value: ${self:custom.Stage}
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - lambda.amazonaws.com
+                - apigateway.amazonaws.com
+            Action:
+              - sts:AssumeRole

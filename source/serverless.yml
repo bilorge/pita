@@ -1,0 +1,51 @@
+service: emitter-source
+
+plugins:
+  - serverless-bundle
+  - serverless-pseudo-parameters
+  - serverless-offline
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  region: us-east-1
+  stage: dev
+  iamRoleStatements:
+    - Effect: "Allow"
+      Resource: "*"
+      Action:
+        - "sns:*"
+    - Effect: Allow
+      Action:
+        - s3:ListBucket
+        - s3:PutObject
+        - s3:GetObject
+      Resource: "arn:aws:s3:::${self:custom.emitter-bucket-name}/*"
+
+functions:
+  addNote:
+    handler: ./app/handler.track
+    events:
+      - http:
+          path: fireEvent
+          method: GET
+          cors: true
+      - s3:
+          existing: true
+          bucket: ${self:custom.emitter-bucket-name}
+          event: s3:ObjectCreated:*
+
+  # analyzeNote:
+  #   handler: ./app/repeater.repeat
+  #   events:
+  #     - sns: notifierTopic
+
+custom:
+  emitter-bucket-name: buco
+
+resources:
+  Resources:
+    S3BucketEmitterResource:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: ${self:custom.emitter-bucket-name}

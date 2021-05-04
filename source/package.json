@@ -1,0 +1,18 @@
+{
+  "dependencies": {
+    "serverless": "^2.37.0",
+    "serverless-pseudo-parameters": "^2.5.0",
+    "serverless-webpack": "^5.4.1"
+  },
+  "devDependencies": {
+    "aws-sdk": "^2.897.0",
+    "cfn-lint": "^1.9.7",
+    "clean-webpack-plugin": "*",
+    "jsonexport": "^3.2.0",
+    "serverless-bundle": "^4.2.3",
+    "serverless-offline": "^6.9.0",
+    "typescript": "^4.2.4",
+    "webpack": "^4.46.0",
+    "webpack-cli": "^4.6.0"
+  }
+}

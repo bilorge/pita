@@ -1,0 +1,5 @@
+sqsAccessPolicy:
+  Effect: Allow
+  Action:
+    - "sqs:*"
+  Resource: "*"

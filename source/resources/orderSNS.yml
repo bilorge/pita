@@ -1,0 +1,5 @@
+orderSNSTopic:
+  Effect: Allow
+  Action:
+    - "sns:*"
+  Resource: ${self:custom.shipmentSNS}

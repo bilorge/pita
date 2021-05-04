@@ -1,0 +1,5 @@
+Resources:
+  S3BucketEmitterResource:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: ${self:custom.emitterbucketname}

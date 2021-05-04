@@ -1,0 +1,20 @@
+Resources:
+  LambdaSNSPermissionCoreAPITracking:
+    Type: AWS::Lambda::Permission
+    Properties:
+      FunctionName:
+        Fn::GetAtt: TrackLambdaFunction.Arn
+      Action: lambda:InvokeFunction
+      Principal: sns.amazonaws.com
+      SourceArn: arn:aws:sns:us-west-2:784576558734:wp-core-api-tracking-queue
+
+  LambdaSNSSubscriptionCoreAPITracking:
+    Type: AWS::SNS::Subscription
+    DependsOn:       
+      - TrackLambdaFunction
+      - LambdaSNSPermissionCoreAPITracking
+    Properties: 
+      Endpoint:
+        Fn::GetAtt: TrackLambdaFunction.Arn
+      Protocol: lambda
+      TopicArn: arn:aws:sns:us-west-2:784576558734:wp-core-api-tracking-queue
